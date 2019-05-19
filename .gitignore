@@ -4,6 +4,7 @@ HELP.md
 pom.xml
 mvnw
 mvnw.cmd
+.mvn
 
 ### STS ###
 .apt_generated
