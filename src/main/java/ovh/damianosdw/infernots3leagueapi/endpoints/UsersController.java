@@ -10,12 +10,14 @@ import ovh.damianosdw.infernots3leagueapi.db.dbmodels.User;
 import ovh.damianosdw.infernots3leagueapi.db.repositories.UsersRepository;
 import ovh.damianosdw.infernots3leagueapi.exceptions.NotFoundException;
 import ovh.damianosdw.infernots3leagueapi.exceptions.UserFoundException;
+import ovh.damianosdw.infernots3leagueapi.misc.UserCredentials;
 import ovh.damianosdw.infernots3leagueapi.misc.UserInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class UsersController
@@ -38,13 +40,13 @@ public class UsersController
     }
 
     @PostMapping("logIn")
-    public boolean logIn(String login, String password)
+    public boolean logIn(@RequestBody UserCredentials userCredentials)
     {
-        User userInDB = getUserByUsername(login);
+        User userInDB = getUserByUsername(userCredentials.getLogin());
 
         if(userInDB != null)
             // Check if password is correct
-            return passwordEncoder().matches(password, userInDB.getPassword());
+            return passwordEncoder().matches(userCredentials.getPassword(), userInDB.getPassword());
         else
             return false;
     }
