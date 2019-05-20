@@ -8,7 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ovh.damianosdw.infernots3leagueapi.db.dbmodels.User;
 import ovh.damianosdw.infernots3leagueapi.db.repositories.UsersRepository;
+import ovh.damianosdw.infernots3leagueapi.exceptions.NotFoundException;
 import ovh.damianosdw.infernots3leagueapi.exceptions.UserFoundException;
+import ovh.damianosdw.infernots3leagueapi.misc.UserInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +27,7 @@ public class UsersController
         return new BCryptPasswordEncoder();
     }
 
-    @GetMapping("{username}/user")
+    @GetMapping("{username}")
     public User getUserByUsername(@PathVariable("username") String username)
     {
         List<User> users = usersRepository.findAll().stream().filter(user -> user.getUsername().equals(username)).collect(Collectors.toList());
@@ -35,11 +37,37 @@ public class UsersController
             return users.get(0);
     }
 
+    @PostMapping("logIn")
+    public boolean logIn(String login, String password)
+    {
+        User userInDB = getUserByUsername(login);
+
+        if(userInDB != null)
+            // Check if password is correct
+            return passwordEncoder().matches(password, userInDB.getPassword());
+        else
+            return false;
+    }
+
+    @GetMapping("{username}/info")
+    public UserInfo getUserInfo(@PathVariable("username") String username)
+    {
+        User userInDB = getUserByUsername(username);
+
+        if(userInDB != null)
+            return new UserInfo(userInDB.getUserId(), userInDB.getUsername(), userInDB.getTs3Nickname(), userInDB.getLolNickname(), userInDB.getCsgoNickname());
+        else
+            throw new NotFoundException();
+    }
+
     @PutMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody User user)
     {
-        List<User> users = usersRepository.findAll().stream().filter(tempUser -> tempUser.getUsername().equals(user.getUsername())).collect(Collectors.toList());
+        List<User> users = usersRepository.findAll()
+                .stream()
+                .filter(tempUser -> tempUser.getUsername().equals(user.getUsername()) || tempUser.getTs3Nickname().equals(user.getTs3Nickname()))
+                .collect(Collectors.toList());
 
         if(users.isEmpty())
         {
