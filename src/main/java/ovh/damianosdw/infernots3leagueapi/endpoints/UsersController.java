@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ovh.damianosdw.infernots3leagueapi.db.dbmodels.User;
 import ovh.damianosdw.infernots3leagueapi.db.repositories.UsersRepository;
 import ovh.damianosdw.infernots3leagueapi.exceptions.NotFoundException;
-import ovh.damianosdw.infernots3leagueapi.exceptions.UserFoundException;
 import ovh.damianosdw.infernots3leagueapi.misc.UserCredentials;
 import ovh.damianosdw.infernots3leagueapi.misc.UserInfo;
 
@@ -64,7 +63,7 @@ public class UsersController
 
     @PutMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody User user)
+    public boolean createUser(@RequestBody User user)
     {
         List<User> users = usersRepository.findAll()
                 .stream()
@@ -76,8 +75,9 @@ public class UsersController
             User tempUser = new User(user.getUserId(), user.getUsername(), passwordEncoder().encode(user.getPassword()), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
 
             usersRepository.save(tempUser);
+            return true;
         }
         else
-            throw new UserFoundException();
+            return false;
     }
 }
