@@ -1,3 +1,8 @@
+/*
+ * Created by DamianosDW
+ * https://damianosdw.ovh
+ */
+
 package ovh.damianosdw.infernots3leagueapi.misc;
 
 import lombok.AllArgsConstructor;
