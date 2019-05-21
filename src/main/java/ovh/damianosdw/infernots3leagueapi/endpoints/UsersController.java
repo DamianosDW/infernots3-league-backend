@@ -1,3 +1,8 @@
+/*
+ * Created by DamianosDW
+ * https://damianosdw.ovh
+ */
+
 package ovh.damianosdw.infernots3leagueapi.endpoints;
 
 import lombok.AllArgsConstructor;
@@ -75,6 +80,20 @@ public class UsersController
             User tempUser = new User(user.getUserId(), user.getUsername(), passwordEncoder().encode(user.getPassword()), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
 
             usersRepository.save(tempUser);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    @PutMapping("info/update")
+    public boolean updateUserInfo(@RequestBody UserInfo userInfo)
+    {
+        User currentUser = getUserByUsername(userInfo.getUsername());
+
+        if(currentUser != null)
+        {
+            usersRepository.updateUsers(new User(userInfo.getUserId(), userInfo.getUsername(), currentUser.getPassword(), userInfo.getTs3Nickname(), userInfo.getLolNickname(), userInfo.getCsgoNickname()));
             return true;
         }
         else
