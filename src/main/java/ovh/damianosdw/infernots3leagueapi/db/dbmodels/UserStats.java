@@ -11,22 +11,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User
+@Table(name = "user_stats")
+public class UserStats
 {
     @Id
     @GeneratedValue
-    @Column(name = "USER_ID", nullable = false, unique = true)
-    private int userId;
+    private int id;
+    @ManyToOne
+    private User user;
     @Column(nullable = false)
-    private String username;
-    private String password;
-    @Column(name = "ts3_nickname", nullable = false)
-    private String ts3Nickname;
-    private String lolNickname;
-    private String csgoNickname;
+    private long leaguePoints;
+    @Column(nullable = false)
+    private boolean participatesInTournament;
 }
