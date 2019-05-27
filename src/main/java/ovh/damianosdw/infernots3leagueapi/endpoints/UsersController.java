@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ovh.damianosdw.infernots3leagueapi.db.dbmodels.User;
+import ovh.damianosdw.infernots3leagueapi.db.dbmodels.UserStats;
+import ovh.damianosdw.infernots3leagueapi.db.repositories.UserStatsRepository;
 import ovh.damianosdw.infernots3leagueapi.db.repositories.UsersRepository;
 import ovh.damianosdw.infernots3leagueapi.exceptions.NotFoundException;
 import ovh.damianosdw.infernots3leagueapi.misc.UserCredentials;
@@ -27,24 +29,43 @@ import java.util.stream.Collectors;
 public class UsersController
 {
     private final UsersRepository usersRepository;
+    private final UserStatsRepository userStatsRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @GetMapping("{username}")
-    public User getUserByUsername(@PathVariable("username") String username)
+    @GetMapping("{userId}")
+    public User getUserByUserId(@PathVariable("userId") int userId)
     {
-        List<User> users = usersRepository.findAll().stream().filter(user -> user.getUsername().equals(username)).collect(Collectors.toList());
+        List<User> users = usersRepository.findAll()
+                .stream()
+                .filter(user -> user.getUserId() == userId)
+                .collect(Collectors.toList());
+
         if(users.isEmpty())
             return null;
         else
             return users.get(0);
     }
 
-    @PostMapping("logIn")
-    public boolean logIn(@RequestBody UserCredentials userCredentials)
+    @GetMapping("{username}")
+    public User getUserByUsername(@PathVariable("username") String username)
+    {
+        List<User> users = usersRepository.findAll()
+                .stream()
+                .filter(user -> user.getUsername().equals(username))
+                .collect(Collectors.toList());
+
+        if(users.isEmpty())
+            return null;
+        else
+            return users.get(0);
+    }
+
+    @PostMapping("login")
+    public boolean login(@RequestBody UserCredentials userCredentials)
     {
         User userInDB = getUserByUsername(userCredentials.getLogin());
 
@@ -79,7 +100,13 @@ public class UsersController
         {
             User tempUser = new User(user.getUserId(), user.getUsername(), passwordEncoder().encode(user.getPassword()), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
 
+            UserStats userStats = new UserStats();
+            userStats.setUser(tempUser);
+            userStats.setLeaguePoints(0);
+            userStats.setParticipatesInTournament(false);
+
             usersRepository.save(tempUser);
+            userStatsRepository.save(userStats);
             return true;
         }
         else
@@ -93,7 +120,7 @@ public class UsersController
 
         if(currentUser != null)
         {
-            usersRepository.updateUsers(new User(userInfo.getUserId(), userInfo.getUsername(), currentUser.getPassword(), userInfo.getTs3Nickname(), userInfo.getLolNickname(), userInfo.getCsgoNickname()));
+            usersRepository.updateUsers(new User(currentUser.getUserId(), userInfo.getUsername(), currentUser.getPassword(), userInfo.getTs3Nickname(), userInfo.getLolNickname(), userInfo.getCsgoNickname()));
             return true;
         }
         else
