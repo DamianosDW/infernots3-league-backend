@@ -19,7 +19,7 @@ public class UserStatsRepositoryCustomImpl implements UserStatsRepositoryCustom
     private EntityManager entityManager;
 
     @Override
-    public void updateUserStats(int userId, int points)
+    public void updateUserLeaguePoints(int userId, int points)
     {
         entityManager.createNativeQuery("UPDATE user_stats SET league_points = ? WHERE user_user_id = ?")
                 .setParameter(1, points)
