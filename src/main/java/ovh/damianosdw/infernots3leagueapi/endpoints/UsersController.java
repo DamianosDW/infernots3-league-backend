@@ -35,18 +35,10 @@ public class UsersController
         return new BCryptPasswordEncoder();
     }
 
-    @GetMapping("{userId}")
-    public User getUserByUserId(@PathVariable("userId") int userId)
+    @GetMapping("")
+    public List<User> getAllUsers()
     {
-        List<User> users = usersRepository.findAll()
-                .stream()
-                .filter(user -> user.getUserId() == userId)
-                .collect(Collectors.toList());
-
-        if(users.isEmpty())
-            return null;
-        else
-            return users.get(0);
+        return usersRepository.findAll();
     }
 
     @GetMapping("{username}")
@@ -62,6 +54,18 @@ public class UsersController
         else
             return users.get(0);
     }
+
+    @GetMapping("{username}/userId")
+    public int getUserIdByUsername(@PathVariable("username") String username)
+    {
+        User user = getUserByUsername(username);
+
+        if(user == null)
+            return 0;
+        else
+            return user.getUserId();
+    }
+
 
     @PostMapping("login")
     public boolean login(@RequestBody UserCredentials userCredentials)
