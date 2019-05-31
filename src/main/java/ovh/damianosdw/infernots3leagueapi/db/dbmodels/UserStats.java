@@ -24,7 +24,7 @@ public class UserStats
     @ManyToOne
     private User user;
     @Column(nullable = false)
-    private long leaguePoints;
+    private int leaguePoints;
     @Column(nullable = false)
     private boolean participatesInTournament;
 }
