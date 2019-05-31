@@ -26,4 +26,14 @@ public class UserStatsRepositoryCustomImpl implements UserStatsRepositoryCustom
                 .setParameter(2, userId)
                 .executeUpdate();
     }
+
+    @Override
+    public void updateUserParticipationInTournament(int userId, boolean participation)
+    {
+        entityManager.createNativeQuery("UPDATE user_stats SET participates_in_tournament = ? WHERE user_user_id = ?")
+                .setParameter(1, participation)
+                .setParameter(2, userId)
+                .executeUpdate();
+
+    }
 }
