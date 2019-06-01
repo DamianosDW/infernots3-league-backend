@@ -37,4 +37,5 @@ public class Match
     private int secondPlayerScore;
     @Column(nullable = false)
     private boolean bo3;
+    private boolean matchEnded;
 }
