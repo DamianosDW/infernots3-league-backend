@@ -95,7 +95,7 @@ public class UsersController
         User userInDB = getUserByUsername(username);
 
         if(userInDB != null)
-            return new UserInfo(userInDB.getUserId(), userInDB.getUsername(), userInDB.getTs3Nickname(), userInDB.getLolNickname(), userInDB.getCsgoNickname());
+            return new UserInfo(userInDB.getUserId(), userInDB.getUsername(), userInDB.getTs3Nickname(), userInDB.getLolNickname());
         else
             throw new NotFoundException();
     }
@@ -111,7 +111,7 @@ public class UsersController
 
         if(users.isEmpty())
         {
-            User tempUser = new User(user.getUserId(), user.getUsername(), passwordEncoder().encode(user.getPassword()), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
+            User tempUser = new User(user.getUserId(), user.getUsername(), passwordEncoder().encode(user.getPassword()), user.getTs3Nickname(), user.getLolNickname());
 
             UserStats userStats = new UserStats();
             userStats.setUser(tempUser);
@@ -133,7 +133,7 @@ public class UsersController
 
         if(currentUser != null)
         {
-            usersRepository.updateUsers(new User(currentUser.getUserId(), userInfo.getUsername(), currentUser.getPassword(), userInfo.getTs3Nickname(), userInfo.getLolNickname(), userInfo.getCsgoNickname()));
+            usersRepository.updateUsers(new User(currentUser.getUserId(), userInfo.getUsername(), currentUser.getPassword(), userInfo.getTs3Nickname(), userInfo.getLolNickname()));
             return true;
         }
         else

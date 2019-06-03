@@ -79,7 +79,7 @@ public class MatchesRepositoryCustomImpl implements MatchesRepositoryCustom
 
             // Save player info
             User user = usersRepository.getOne(userIds.get(playerNumber));
-            playerInfo = new UserInfo(user.getUserId(), user.getUsername(), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
+            playerInfo = new UserInfo(user.getUserId(), user.getUsername(), user.getTs3Nickname(), user.getLolNickname());
         }
         else
         {
@@ -96,7 +96,7 @@ public class MatchesRepositoryCustomImpl implements MatchesRepositoryCustom
 
                 // Save player info
                 User user = usersRepository.getOne(availablePlayerIds.get(playerNumber));
-                playerInfo = new UserInfo(user.getUserId(), user.getUsername(), user.getTs3Nickname(), user.getLolNickname(), user.getCsgoNickname());
+                playerInfo = new UserInfo(user.getUserId(), user.getUsername(), user.getTs3Nickname(), user.getLolNickname());
             }
             else
                 return null;

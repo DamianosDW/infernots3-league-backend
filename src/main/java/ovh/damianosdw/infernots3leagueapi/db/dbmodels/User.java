@@ -28,5 +28,4 @@ public class User
     @Column(name = "ts3_nickname", nullable = false)
     private String ts3Nickname;
     private String lolNickname;
-    private String csgoNickname;
 }

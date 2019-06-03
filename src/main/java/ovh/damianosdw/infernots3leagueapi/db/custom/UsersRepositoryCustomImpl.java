@@ -19,13 +19,12 @@ public class UsersRepositoryCustomImpl implements UsersRepositoryCustom
     @Override
     public void updateUsers(User user)
     {
-        entityManager.createNativeQuery("UPDATE users SET USERNAME = ?, PASSWORD = ?, TS3_NICKNAME = ?, LOL_NICKNAME = ?, CSGO_NICKNAME = ?  WHERE USER_ID = ?")
+        entityManager.createNativeQuery("UPDATE users SET USERNAME = ?, PASSWORD = ?, TS3_NICKNAME = ?, LOL_NICKNAME = ? WHERE USER_ID = ?")
                 .setParameter(1, user.getUsername())
                 .setParameter(2, user.getPassword())
                 .setParameter(3, user.getTs3Nickname())
                 .setParameter(4, user.getLolNickname())
-                .setParameter(5, user.getCsgoNickname())
-                .setParameter(6, user.getUserId())
+                .setParameter(5, user.getUserId())
                 .executeUpdate();
 
     }

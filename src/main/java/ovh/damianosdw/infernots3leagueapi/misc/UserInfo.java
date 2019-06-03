@@ -18,5 +18,4 @@ public class UserInfo
     private String username;
     private String ts3Nickname;
     private String lolNickname;
-    private String csgoNickname;
 }
