@@ -41,6 +41,16 @@ public class UsersController
         return usersRepository.findAll();
     }
 
+    @GetMapping("playerIds")
+    public List<Integer> getAllPlayerIds()
+    {
+        List<UserStats> players = userStatsRepository.getAllByParticipatesInTournamentIsTrue();
+
+        return players.stream()
+                .map(player -> player.getUser().getUserId())
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("{username}")
     public User getUserByUsername(@PathVariable("username") String username)
     {
