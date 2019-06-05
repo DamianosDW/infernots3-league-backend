@@ -41,9 +41,14 @@ public class MatchesController
     {
         List<Match> currentMatches = getAllCurrentMatches();
 
-        return currentMatches.stream()
+        List<Match> nextMatches = currentMatches.stream()
                 .filter(match -> match.getFirstPlayer().getUserId() == userId || match.getSecondPlayer().getUserId() == userId)
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList());
+
+        if(!nextMatches.isEmpty())
+            return nextMatches.get(0);
+        else
+            return null;
     }
 
     @PostMapping("create")
