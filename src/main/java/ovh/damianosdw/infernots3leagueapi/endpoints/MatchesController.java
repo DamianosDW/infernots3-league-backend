@@ -57,8 +57,8 @@ public class MatchesController
         matchesRepository.save(match);
     }
 
-    @PutMapping("{matchId}")
-    public boolean endMatch(@PathVariable("matchId") int matchId)
+    @PutMapping("endMatch")
+    public boolean endMatch(int matchId)
     {
         try {
             matchesRepository.endMatch(matchId);
