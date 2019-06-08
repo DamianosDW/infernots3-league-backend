@@ -42,7 +42,7 @@ public class MatchesController
         List<Match> currentMatches = getAllCurrentMatches();
 
         List<Match> nextMatches = currentMatches.stream()
-                .filter(match -> match.getFirstPlayer().getUserId() == userId || match.getSecondPlayer().getUserId() == userId)
+                .filter(match -> (match.getFirstPlayer().getUserId() == userId || match.getSecondPlayer().getUserId() == userId) && !match.isMatchEnded())
                 .collect(Collectors.toList());
 
         if(!nextMatches.isEmpty())
