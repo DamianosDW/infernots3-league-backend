@@ -62,6 +62,7 @@ public class MatchesRepositoryCustomImpl implements MatchesRepositoryCustom
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int playerNumber = 0;
 
+        // Select random registered player (instead of logged in player)
         if(unavailablePlayerIds.isEmpty())
         {
             // Select player
@@ -70,7 +71,7 @@ public class MatchesRepositoryCustomImpl implements MatchesRepositoryCustom
                 do
                 {
                     playerNumber = random.nextInt(0, userIds.size() - 1);
-                } while(playerNumber == userId);
+                } while(userIds.get(playerNumber) == userId);
             }
             else if(userIds.get(0) == userId)
             {
