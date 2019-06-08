@@ -30,6 +30,15 @@ public class MatchesController
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("dates")
+    public List<LocalDateTime> getCurrentMatchesStartDates()
+    {
+        return getAllCurrentMatches().stream()
+                .filter(match -> match.getMatchStartDate().getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
+                .map(Match::getMatchStartDate)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("user/{userId}/opponent")
     public UserInfo getAvailableOpponent(@PathVariable("userId") int userId)
     {
