@@ -26,7 +26,7 @@ public class MatchesController
     public List<Match> getAllCurrentMatches()
     {
         return matchesRepository.findAll().stream()
-                .filter(match -> match.getMatchStartDate().isAfter(LocalDateTime.now().minusWeeks(1)))
+                .filter(match -> match.getMatchStartDate().isAfter(LocalDateTime.now()))
                 .collect(Collectors.toList());
     }
 
